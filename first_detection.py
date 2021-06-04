@@ -47,7 +47,7 @@ def click_on_target(event, x, y, flags,param):
 def get_optical_flow(frame_prev,frame):
     gray_prev = cv2.cvtColor(frame_prev, cv2.COLOR_BGR2GRAY)
     gray_frame= cv2.cvtColor(frame,cv2.COLOR_BGR2GRAY)
-    prevPts =  cv2.goodFeaturesToTrack(gray_prev, mask = None,maxCorners = 50, qualityLevel = 0.2, minDistance = 5, blockSize = 7)
+    prevPts =  cv2.goodFeaturesToTrack(gray_prev, mask = None,maxCorners = 70, qualityLevel = 0.2, minDistance = 7, blockSize = 7)
     next, status, error = cv2.calcOpticalFlowPyrLK(gray_prev, gray_frame,prevPts, None, winSize = (15,15), maxLevel = 2, criteria = (cv2.TERM_CRITERIA_EPS | cv2.TERM_CRITERIA_COUNT, 10, 0.03))
     print("next: ",next,"\n status: ",status,"error: ",error)
     return next, status, error, prevPts 
@@ -68,20 +68,18 @@ def track_object_with_optical_flow(next,status,frame,prev):
                 if(b > bbox_target[1] and b < bbox_target[0] + bbox_target[3]):
                     
     
-                    if((abs(bbox_target[0] - a), abs(bbox_target[1] - b)) < (abs(bbox_target[0] - close_point[0]), abs(bbox_target[1] - close_point[1]))):
+                    if( abs(bbox_target[0] - a) < abs(bbox_target[0] - close_point[0])  and  abs(bbox_target[1] - b) < abs(bbox_target[1] - close_point[1])):
                         close_point.clear()
                         close_point.append(a)
                         close_point.append(b)
                         close_point.append(c)
                         close_point.append(d)
+                        
     if( close_point != [0,0]):                           
         cv2.rectangle(frame,(int(close_point[0]-bbox_target[2]/2),int(close_point[1]-bbox_target[3]/2)),(int(close_point[0]+bbox_target[2]/2),int(close_point[1]+bbox_target[3]/2)),(0, 0, 255),3)
         cv2.putText(frame,'Target_optical_flow',(int(close_point[0]-bbox_target[2]/2),int(close_point[1]-bbox_target[3]/2)-2),cv2.FONT_HERSHEY_COMPLEX,0.5,(0,0,255),2)
-        current_click.clear()
-        current_click.append(close_point[2])
-        current_click.append(close_point[3])
-        bbox_target[0] = close_point[2] -int(bbox_target[2]/2)
-        bbox_target[1] = close_point[3] -int(bbox_target[3]/2)
+        
+       
                     
     return frame
             
