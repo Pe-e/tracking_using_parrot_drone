@@ -1,7 +1,7 @@
 import cv2
-from first_detection_past   import *
+from first_detection_dof   import *
 import numpy as np
-CarVideo = cv2.VideoCapture('Rendu_final.mp4')
+CarVideo = cv2.VideoCapture('cars.mp4')
 first = CarVideo.read()[1]
 prev_frame = first
 velocity = False

@@ -1,7 +1,7 @@
 import cv2
 from cv2.data import haarcascades
 import numpy as np
-cars_cascade = cv2.CascadeClassifier(haarcascades+"haarcascade_fullbody.xml")
+cars_cascade = cv2.CascadeClassifier("cars.xml")
 current_click = []
 last_targets = []
 
