@@ -3,9 +3,9 @@ from cv2.data import haarcascades
 import numpy as np
 cars_cascade = cv2.CascadeClassifier("cars.xml")
 current_click = []
-last_targets = []
+bbox_targets = []
 
-last_flow = []
+
 
 def detect(frame):
     targets = cars_cascade.detectMultiScale(frame, 1.15, 4)
